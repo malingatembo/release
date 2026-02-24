@@ -5,7 +5,7 @@ presubmits:
     branches:
     - ^master$
     - ^master-
-    cluster: build06
+    cluster: build09
     context: ci/prow/e2e-agent-4control-ipv4
     decorate: true
     labels:
@@ -28,9 +28,17 @@ presubmits:
         - --target=e2e-agent-4control-ipv4
         command:
         - ci-operator
+        env:
+        - name: HTTP_SERVER_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
         image: quay-proxy.ci.openshift.org/openshift/ci:ci_ci-operator_latest
         imagePullPolicy: Always
         name: ""
+        ports:
+        - containerPort: 8080
+          name: http
         resources:
           requests:
             cpu: 10m
@@ -79,7 +87,7 @@ presubmits:
     branches:
     - ^master$
     - ^master-
-    cluster: build06
+    cluster: build09
     context: ci/prow/e2e-agent-5control-ipv4
     decorate: true
     labels:
@@ -102,9 +110,17 @@ presubmits:
         - --target=e2e-agent-5control-ipv4
         command:
         - ci-operator
+        env:
+        - name: HTTP_SERVER_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
         image: quay-proxy.ci.openshift.org/openshift/ci:ci_ci-operator_latest
         imagePullPolicy: Always
         name: ""
+        ports:
+        - containerPort: 8080
+          name: http
         resources:
           requests:
             cpu: 10m
@@ -153,7 +169,7 @@ presubmits:
     branches:
     - ^master$
     - ^master-
-    cluster: build06
+    cluster: build09
     context: ci/prow/e2e-agent-compact-ipv4
     decorate: true
     labels:
@@ -176,9 +192,17 @@ presubmits:
         - --target=e2e-agent-compact-ipv4
         command:
         - ci-operator
+        env:
+        - name: HTTP_SERVER_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
         image: quay-proxy.ci.openshift.org/openshift/ci:ci_ci-operator_latest
         imagePullPolicy: Always
         name: ""
+        ports:
+        - containerPort: 8080
+          name: http
         resources:
           requests:
             cpu: 10m
@@ -227,7 +251,7 @@ presubmits:
     branches:
     - ^master$
     - ^master-
-    cluster: build06
+    cluster: build09
     context: ci/prow/e2e-agent-ha-dualstack
     decorate: true
     labels:
@@ -250,9 +274,17 @@ presubmits:
         - --target=e2e-agent-ha-dualstack
         command:
         - ci-operator
+        env:
+        - name: HTTP_SERVER_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
         image: quay-proxy.ci.openshift.org/openshift/ci:ci_ci-operator_latest
         imagePullPolicy: Always
         name: ""
+        ports:
+        - containerPort: 8080
+          name: http
         resources:
           requests:
             cpu: 10m
@@ -301,7 +333,7 @@ presubmits:
     branches:
     - ^master$
     - ^master-
-    cluster: build06
+    cluster: build09
     context: ci/prow/e2e-agent-sno-ipv6
     decorate: true
     labels:
@@ -324,9 +356,17 @@ presubmits:
         - --target=e2e-agent-sno-ipv6
         command:
         - ci-operator
+        env:
+        - name: HTTP_SERVER_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
         image: quay-proxy.ci.openshift.org/openshift/ci:ci_ci-operator_latest
         imagePullPolicy: Always
         name: ""
+        ports:
+        - containerPort: 8080
+          name: http
         resources:
           requests:
             cpu: 10m
@@ -372,12 +412,10 @@ presubmits:
     trigger: (?m)^/test( | .* )e2e-agent-sno-ipv6,?($|\s.*)
   - agent: kubernetes
     always_run: false
-    annotations:
-      pipeline_run_if_changed: ^(deploy/.*|hack/.*|src/.*|vendor/.*|Dockerfile.*|Makefile|go\.mod|go\.sum|\.dockerignore)$
     branches:
     - ^master$
     - ^master-
-    cluster: build06
+    cluster: build09
     context: ci/prow/edge-e2e-ai-operator-ztp
     decorate: true
     labels:
@@ -390,6 +428,7 @@ presubmits:
       pj-rehearse.openshift.io/can-be-rehearsed: "true"
     name: pull-ci-openshift-assisted-installer-master-edge-e2e-ai-operator-ztp
     rerun_command: /test edge-e2e-ai-operator-ztp
+    skip_if_only_changed: ^docs/|^\.github/|\.md$|^(?:.*/)?(?:\.gitignore|.tekton/.*|OWNERS|OWNERS_ALIASES|PROJECT|LICENSE)$
     spec:
       containers:
       - args:
@@ -402,9 +441,17 @@ presubmits:
         - --variant=edge
         command:
         - ci-operator
+        env:
+        - name: HTTP_SERVER_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
         image: quay-proxy.ci.openshift.org/openshift/ci:ci_ci-operator_latest
         imagePullPolicy: Always
         name: ""
+        ports:
+        - containerPort: 8080
+          name: http
         resources:
           requests:
             cpu: 10m
@@ -450,12 +497,10 @@ presubmits:
     trigger: (?m)^/test( | .* )edge-e2e-ai-operator-ztp,?($|\s.*)
   - agent: kubernetes
     always_run: false
-    annotations:
-      pipeline_run_if_changed: ^(deploy/.*|hack/.*|src/.*|vendor/.*|Dockerfile.*|Makefile|go\.mod|go\.sum|\.dockerignore)$
     branches:
     - ^master$
     - ^master-
-    cluster: build06
+    cluster: build09
     context: ci/prow/edge-e2e-metal-assisted-4-21
     decorate: true
     labels:
@@ -468,6 +513,7 @@ presubmits:
       pj-rehearse.openshift.io/can-be-rehearsed: "true"
     name: pull-ci-openshift-assisted-installer-master-edge-e2e-metal-assisted-4-21
     rerun_command: /test edge-e2e-metal-assisted-4-21
+    skip_if_only_changed: ^docs/|^\.github/|\.md$|^(?:.*/)?(?:\.gitignore|.tekton/.*|OWNERS|OWNERS_ALIASES|PROJECT|LICENSE)$
     spec:
       containers:
       - args:
@@ -480,9 +526,17 @@ presubmits:
         - --variant=edge
         command:
         - ci-operator
+        env:
+        - name: HTTP_SERVER_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
         image: quay-proxy.ci.openshift.org/openshift/ci:ci_ci-operator_latest
         imagePullPolicy: Always
         name: ""
+        ports:
+        - containerPort: 8080
+          name: http
         resources:
           requests:
             cpu: 10m
@@ -531,7 +585,7 @@ presubmits:
     branches:
     - ^master$
     - ^master-
-    cluster: build06
+    cluster: build09
     context: ci/prow/edge-e2e-metal-assisted-cnv-4-19
     decorate: true
     labels:
@@ -557,9 +611,17 @@ presubmits:
         - --variant=edge
         command:
         - ci-operator
+        env:
+        - name: HTTP_SERVER_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
         image: quay-proxy.ci.openshift.org/openshift/ci:ci_ci-operator_latest
         imagePullPolicy: Always
         name: ""
+        ports:
+        - containerPort: 8080
+          name: http
         resources:
           requests:
             cpu: 10m
@@ -608,7 +670,7 @@ presubmits:
     branches:
     - ^master$
     - ^master-
-    cluster: build06
+    cluster: build09
     context: ci/prow/edge-e2e-metal-assisted-external-4-21
     decorate: true
     labels:
@@ -634,9 +696,17 @@ presubmits:
         - --variant=edge
         command:
         - ci-operator
+        env:
+        - name: HTTP_SERVER_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
         image: quay-proxy.ci.openshift.org/openshift/ci:ci_ci-operator_latest
         imagePullPolicy: Always
         name: ""
+        ports:
+        - containerPort: 8080
+          name: http
         resources:
           requests:
             cpu: 10m
@@ -685,7 +755,7 @@ presubmits:
     branches:
     - ^master$
     - ^master-
-    cluster: build06
+    cluster: build09
     context: ci/prow/edge-e2e-metal-assisted-ipv6-4-21
     decorate: true
     labels:
@@ -711,9 +781,17 @@ presubmits:
         - --variant=edge
         command:
         - ci-operator
+        env:
+        - name: HTTP_SERVER_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
         image: quay-proxy.ci.openshift.org/openshift/ci:ci_ci-operator_latest
         imagePullPolicy: Always
         name: ""
+        ports:
+        - containerPort: 8080
+          name: http
         resources:
           requests:
             cpu: 10m
@@ -762,7 +840,7 @@ presubmits:
     branches:
     - ^master$
     - ^master-
-    cluster: build06
+    cluster: build09
     context: ci/prow/edge-e2e-metal-assisted-lvm-4-21
     decorate: true
     labels:
@@ -788,9 +866,17 @@ presubmits:
         - --variant=edge
         command:
         - ci-operator
+        env:
+        - name: HTTP_SERVER_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
         image: quay-proxy.ci.openshift.org/openshift/ci:ci_ci-operator_latest
         imagePullPolicy: Always
         name: ""
+        ports:
+        - containerPort: 8080
+          name: http
         resources:
           requests:
             cpu: 10m
@@ -839,7 +925,7 @@ presubmits:
     branches:
     - ^master$
     - ^master-
-    cluster: build06
+    cluster: build09
     context: ci/prow/edge-e2e-metal-assisted-odf-4-19
     decorate: true
     labels:
@@ -865,9 +951,17 @@ presubmits:
         - --variant=edge
         command:
         - ci-operator
+        env:
+        - name: HTTP_SERVER_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
         image: quay-proxy.ci.openshift.org/openshift/ci:ci_ci-operator_latest
         imagePullPolicy: Always
         name: ""
+        ports:
+        - containerPort: 8080
+          name: http
         resources:
           requests:
             cpu: 10m
@@ -916,7 +1010,7 @@ presubmits:
     branches:
     - ^master$
     - ^master-
-    cluster: build06
+    cluster: build09
     context: ci/prow/edge-e2e-metal-assisted-single-node-4-21
     decorate: true
     labels:
@@ -942,9 +1036,17 @@ presubmits:
         - --variant=edge
         command:
         - ci-operator
+        env:
+        - name: HTTP_SERVER_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
         image: quay-proxy.ci.openshift.org/openshift/ci:ci_ci-operator_latest
         imagePullPolicy: Always
         name: ""
+        ports:
+        - containerPort: 8080
+          name: http
         resources:
           requests:
             cpu: 10m
@@ -993,7 +1095,7 @@ presubmits:
     branches:
     - ^master$
     - ^master-
-    cluster: build06
+    cluster: build05
     context: ci/prow/edge-e2e-oci-assisted-4-21
     decorate: true
     labels:
@@ -1018,9 +1120,17 @@ presubmits:
         - --variant=edge
         command:
         - ci-operator
+        env:
+        - name: HTTP_SERVER_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
         image: quay-proxy.ci.openshift.org/openshift/ci:ci_ci-operator_latest
         imagePullPolicy: Always
         name: ""
+        ports:
+        - containerPort: 8080
+          name: http
         resources:
           requests:
             cpu: 10m
@@ -1094,9 +1204,17 @@ presubmits:
         - --variant=edge
         command:
         - ci-operator
+        env:
+        - name: HTTP_SERVER_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
         image: quay-proxy.ci.openshift.org/openshift/ci:ci_ci-operator_latest
         imagePullPolicy: Always
         name: ""
+        ports:
+        - containerPort: 8080
+          name: http
         resources:
           requests:
             cpu: 10m
@@ -1145,7 +1263,7 @@ presubmits:
     branches:
     - ^master$
     - ^master-
-    cluster: build06
+    cluster: build05
     context: ci/prow/edge-format-check
     decorate: true
     labels:
@@ -1166,9 +1284,17 @@ presubmits:
         - --variant=edge
         command:
         - ci-operator
+        env:
+        - name: HTTP_SERVER_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
         image: quay-proxy.ci.openshift.org/openshift/ci:ci_ci-operator_latest
         imagePullPolicy: Always
         name: ""
+        ports:
+        - containerPort: 8080
+          name: http
         resources:
           requests:
             cpu: 10m
@@ -1202,7 +1328,7 @@ presubmits:
     branches:
     - ^master$
     - ^master-
-    cluster: build06
+    cluster: build05
     context: ci/prow/edge-images
     decorate: true
     labels:
@@ -1258,7 +1384,7 @@ presubmits:
     branches:
     - ^master$
     - ^master-
-    cluster: build06
+    cluster: build05
     context: ci/prow/edge-lint
     decorate: true
     labels:
@@ -1279,9 +1405,17 @@ presubmits:
         - --variant=edge
         command:
         - ci-operator
+        env:
+        - name: HTTP_SERVER_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
         image: quay-proxy.ci.openshift.org/openshift/ci:ci_ci-operator_latest
         imagePullPolicy: Always
         name: ""
+        ports:
+        - containerPort: 8080
+          name: http
         resources:
           requests:
             cpu: 10m
@@ -1315,7 +1449,7 @@ presubmits:
     branches:
     - ^master$
     - ^master-
-    cluster: build06
+    cluster: build05
     context: ci/prow/edge-unit-test
     decorate: true
     labels:
@@ -1337,9 +1471,17 @@ presubmits:
         - --variant=edge
         command:
         - ci-operator
+        env:
+        - name: HTTP_SERVER_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
         image: quay-proxy.ci.openshift.org/openshift/ci:ci_ci-operator_latest
         imagePullPolicy: Always
         name: ""
+        ports:
+        - containerPort: 8080
+          name: http
         resources:
           requests:
             cpu: 10m
@@ -1379,7 +1521,7 @@ presubmits:
     branches:
     - ^master$
     - ^master-
-    cluster: build06
+    cluster: build05
     context: ci/prow/images
     decorate: true
     labels:
@@ -1433,7 +1575,7 @@ presubmits:
     branches:
     - ^master$
     - ^master-
-    cluster: build06
+    cluster: build05
     context: ci/prow/mce-images
     decorate: true
     labels:
@@ -1514,9 +1656,17 @@ presubmits:
         - --variant=okd-scos
         command:
         - ci-operator
+        env:
+        - name: HTTP_SERVER_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
         image: quay-proxy.ci.openshift.org/openshift/ci:ci_ci-operator_latest
         imagePullPolicy: Always
         name: ""
+        ports:
+        - containerPort: 8080
+          name: http
         resources:
           requests:
             cpu: 10m
@@ -1565,7 +1715,7 @@ presubmits:
     branches:
     - ^master$
     - ^master-
-    cluster: build06
+    cluster: build05
     context: ci/prow/okd-scos-images
     decorate: true
     decoration_config:
@@ -1623,7 +1773,7 @@ presubmits:
     branches:
     - ^master$
     - ^master-
-    cluster: build06
+    cluster: build05
     context: ci/prow/verify-deps
     decorate: true
     labels:
@@ -1641,9 +1791,17 @@ presubmits:
         - --target=verify-deps
         command:
         - ci-operator
+        env:
+        - name: HTTP_SERVER_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
         image: quay-proxy.ci.openshift.org/openshift/ci:ci_ci-operator_latest
         imagePullPolicy: Always
         name: ""
+        ports:
+        - containerPort: 8080
+          name: http
         resources:
           requests:
             cpu: 10m
